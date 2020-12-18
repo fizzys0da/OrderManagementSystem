@@ -14,8 +14,8 @@ public class ServiceProvider {
     private String name;
     private int id;
     private boolean busy = false;
-    private int breakLeft = 0;
-    private Set<Service> services = new HashSet<>();
+    private int jobTimeLeft = 0;
+    private Set<Service> services;
 
     /**
       *
@@ -26,7 +26,7 @@ public class ServiceProvider {
 
         this.name = name;
         this.id = id;
-        this.services = services;
+        this.services = new HashSet<>(services);
     }
 
     public String getName(){
@@ -53,11 +53,10 @@ public class ServiceProvider {
     /**
       * Free this provider up - is not longer assigned to a customer
       * @throws IllegalStateException if the provider is NOT currently assigned to a job */
-    protected void endCustomerEngagement(){
-        if(busy == true){
+    protected void endCustomerEngagement() {
+        if (busy == true){
             busy = false;
-        }
-        else{
+        } else {
             throw new IllegalStateException("Not assigned!");
         }
     }
@@ -101,28 +100,26 @@ public class ServiceProvider {
         return copy;
     }
 
-    protected void advanceBreak() {
-      if (!busy && breakLeft > 0) {
-        breakLeft--;
-      }
+    protected void advanceProgress() {
+        if (!busy && jobTimeLeft > 0) {
+            jobTimeLeft--;
+        }
+        if (jobTimeLeft == 0 && busy) {
+            this.endCustomerEngagement();
+        }
     }
 
-    protected boolean isBusy() {
-      return busy;
+    protected boolean isAvailable() {
+        return !busy && jobTimeLeft == 0;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if(o == this){
-            return true;
-        }
-        if(o == null || o.getClass()!= this.getClass()){
-            return false;
-        }
-        ServiceProvider provider = (ServiceProvider) o;
-
-        return (provider.name.equals(this.name)  && provider.id == this.id);
-    }
+    public boolean equals(Object o){
+      if (o instanceof ServiceProvider) {
+        return o.hashCode() == this.hashCode();
+      }
+      return false;
+    } 
 
     @Override
     public int hashCode() {

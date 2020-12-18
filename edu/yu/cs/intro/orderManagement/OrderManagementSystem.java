@@ -1,13 +1,18 @@
 package edu.yu.cs.intro.orderManagement;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 /**
 * Takes orders, manages the warehouse as well as service providers
 */
 public class OrderManagementSystem {
-  private Warehouse warehouse;
-  private Set<Service> services;
-  private Map<ServiceProvider, Service> serviceMap;
+    private Warehouse warehouse;
+    private Map<Service, Set<ServiceProvider>> serviceMap;
+    private Set<ServiceProvider> providerSet;
 
     /**
     * Creates a new Warehouse instance and calls the other constructor
@@ -18,7 +23,7 @@ public class OrderManagementSystem {
     */
     public OrderManagementSystem(Set<Product> products, int defaultProductStockLevel,
     Set<ServiceProvider> serviceProviders) {
-      this(products, defaultProductStockLevel, serviceProviders, new Warehouse());
+        this(products, defaultProductStockLevel, serviceProviders, new Warehouse());
     }
 
     /**
@@ -35,16 +40,14 @@ public class OrderManagementSystem {
     */
     public OrderManagementSystem(Set<Product> products, int defaultProductStockLevel,
     Set<ServiceProvider> serviceProviders, Warehouse warehouse) {
-      serviceMap = new HashMap<>();
-      for (Product product : products) {
-        warehouse.addNewProductToWarehouse(product, defaultProductStockLevel);
-      }
-      for (ServiceProvider provider : serviceProviders) {
-        services.addAll(provider.getServices());
-        for (Service service : provider.getServices()) {
-          serviceMap.put(service, provider);
+        providerSet = new HashSet<>(serviceProviders);
+        serviceMap = new HashMap<>();
+        for (Product product : products) {
+            warehouse.addNewProductToWarehouse(product, defaultProductStockLevel);
         }
-      }
+        for (ServiceProvider provider : serviceProviders) {
+            addServiceProvider(provider);
+        }
     }
     
     /**
@@ -57,11 +60,49 @@ public class OrderManagementSystem {
     * 4) Mark the order as completed
     * 5) Update busy status of serviced providers...
     */
-    public void placeOrder(Order order) {
-      
-      
-    }
     
+    public void placeOrder(Order order) {
+        
+        Map<Product, Integer> listOfProducts = new HashMap<>();
+        for (Item item : order.getItems()) {
+            if (item instanceof Product) {
+                listOfProducts.put((Product)item, order.getQuantity(item));
+            } else {
+                listOfServices.put((Service)item, order.getQuantity(item));
+            }
+        }
+        
+
+        for (Item splitOrder : order.getItems()){
+            if (splitOrder instanceof Service){
+                if (validateServices(services, order) != 0){
+                    listOfServices.put((Product); 
+                } 
+            }
+        //         else {
+        //             order.setCompleted(false);
+        //         }      
+        //         } 
+        //     }
+        //     }
+        // }
+
+        // for (Order splitOrder : order){
+        //     if(splitOrder instanceof products){
+        //         listOfProducts.add(splitOrder);
+        //         if(warehouse.canFulfill(splitOrder.getItemNumber, order.getQuantity(splitOrder) || !warehouse.doNotRestock()){
+        //             //order can be completed
+        //         }
+        //         else{
+        //             if(order.getQuantity(splitOrder) > warehouse.){
+        //                 warehouse.restock(order.getQuantity(splitOrder), int min);
+        //                 //order can be completed
+    
+        //serviceProviders.endCustomerEngagment;
+        for (ServiceProvider provider : providerSet) {
+            provider.advanceProgress();
+        }
+    }
     /**
      * Validate that all the services being ordered can be provided. Make sure to check how many
     instances of a given service are being requested in the order, and see if we have enough providers
@@ -72,11 +113,31 @@ public class OrderManagementSystem {
     for which we do not have an available provider. Return 0 if all services are valid.
     */
     protected int validateServices(Collection<Service> services, Order order) {
-      if(!services.contain(order)){
-        return order;
-      }
+        Map<Service, Integer> listOfServices = new HashMap<>();
+        for (Item item : order.getItems()) {
+            if (item instanceof Service) {
+                listOfServices.put((Service)item, order.getQuantity(item));
+            }
+        }
+        for (Entry<Service, Integer> serviceEntry : listOfServices.entrySet()) {
+            Service service = serviceEntry.getKey();
+            int itemNumber = service.getItemNumber();
+            int quantity = serviceEntry.getValue();
+            if (!serviceMap.keySet().contains(service)) {
+                return itemNumber; // if we simply don't have the service, cancel the order
+            }
+            Set<ServiceProvider> providersForOrder = new HashSet<>();
+            for (ServiceProvider provider : (Set<ServiceProvider>)serviceMap.get(service)) {
+                if (provider.isAvailable)
+                providersForOrder.add()
+            }
+            if (quantity > serviceMap.get(service).size()) {
+                return itemNumber; // if we don't have enough providers
+            }
+        }
         return 0;
     }
+
     /**
      * validate that the requested quantity of products can be fulfilled
      * @param products being ordered in this order
@@ -85,9 +146,16 @@ public class OrderManagementSystem {
     insufficient quantity of. Return 0 if we can fulfill.
     */
     protected int validateProducts(Collection<Product> products, Order order) {
-
+      for (Item prods : order.getItems()){
+            if (prods instanceof Product){
+                if (!warehouse.canFulfill(prods.getItemNumber(),order.getQuantity(prods))){
+                    return prods.getItemNumber();
+                }     
+            }
+        }
         return 0;
-    }
+    }   
+
     /**
      * Adds new Products to the set of products that the warehouse can ship/fulfill
      * @param products the products to add to the warehouse
@@ -95,7 +163,14 @@ public class OrderManagementSystem {
     already in the warehouse before this was called!)
     */
     protected Set<Product> addNewProducts(Collection<Product> products) {
-        return null;
+        Set<Product> newProds = new HashSet<Product>();
+        Set<Product> PW = warehouse.getAllProductsInCatalog();
+        for (Product prod : products){
+            newProds.add(prod);
+            PW.add(prod);
+        }
+        return newProds;
+      }
     }
 
     /**
@@ -104,7 +179,16 @@ public class OrderManagementSystem {
     * @param provider the provider to add
     */
     protected void addServiceProvider(ServiceProvider provider) {
-      ServiceProvider.add(provider);
+       for (Service service : provider.getServices()) {
+            Set<ServiceProvider> providers;
+            if (serviceMap.keySet().contains(service)) {
+                providers = serviceMap.get(service); //**bug here - Type mismatch: cannot convert from Service to Set<ServiceProvider>
+            } else {
+                providers = new HashSet<>();
+            }
+            providers.add(provider);
+            serviceMap.put(service, providers); //**bug here - The method put(ServiceProvider, Service) in the type Map<ServiceProvider,Service> is not applicable for the arguments (Service, HashSet<ServiceProvider>)
+        }
     }
 
     /**
@@ -112,14 +196,15 @@ public class OrderManagementSystem {
      * @return get the set of all the products offered/sold by this business
      */
     public Set<Product> getProductCatalog() {
-      return getProductCatalog.addAll(warehouse);
+        return warehouse.getAllProductsInCatalog();
     }
 
     /**
      * @return get the set of all the Services offered/sold by this business
      */
     public Set<Service> getOfferedServices() {
-      return offeredServices.addAll(services);
+        return ((ServiceProvider) services).getServices();
+        // return offeredServices.addAll(services);
     }
 
     /**
@@ -131,12 +216,12 @@ public class OrderManagementSystem {
     * @param item the item to discontinue see {@link Item}
     */
     protected void discontinueItem(Item item) {
-      if (item instanceof Service) {
-        services.remove(item);
-      } 
-      else if (item instanceof Product) {
-        warehouse.doNotRestock(((Product)item).productID());
-      }
+        if (item instanceof Service) {
+            serviceMap.remove(item);
+        } 
+        else if (item instanceof Product) {
+            warehouse.doNotRestock(((Product)item).getItemNumber());
+        }
     }
 
     /**
@@ -145,8 +230,6 @@ public class OrderManagementSystem {
      * @param level
      */
     protected void setDefaultProductStockLevel(Product prod, int level) {
-
+        warehouse.setDefaultStockLevel(prod.getItemNumber(), level);
     }
-
-
 }
