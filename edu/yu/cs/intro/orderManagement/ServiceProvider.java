@@ -43,7 +43,7 @@ public class ServiceProvider {
     protected void assignToCustomer() {
         if (busy == false) {
             busy = true;
-            breakLeft = 3;
+            jobTimeLeft = 3;
         } 
         else {
             throw new IllegalStateException("Already assigned!");

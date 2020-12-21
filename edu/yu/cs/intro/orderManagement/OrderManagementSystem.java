@@ -41,6 +41,7 @@ public class OrderManagementSystem {
     public OrderManagementSystem(Set<Product> products, int defaultProductStockLevel,
     Set<ServiceProvider> serviceProviders, Warehouse warehouse) {
         providerSet = new HashSet<>(serviceProviders);
+        this.warehouse = warehouse;
         serviceMap = new HashMap<>();
         for (Product product : products) {
             warehouse.addNewProductToWarehouse(product, defaultProductStockLevel);
@@ -67,18 +68,8 @@ public class OrderManagementSystem {
         for (Item item : order.getItems()) {
             if (item instanceof Product) {
                 listOfProducts.put((Product)item, order.getQuantity(item));
-            } else {
-                listOfServices.put((Service)item, order.getQuantity(item));
             }
         }
-        
-
-        for (Item splitOrder : order.getItems()){
-            if (splitOrder instanceof Service){
-                if (validateServices(services, order) != 0){
-                    listOfServices.put((Product); 
-                } 
-            }
         //         else {
         //             order.setCompleted(false);
         //         }      
@@ -127,11 +118,12 @@ public class OrderManagementSystem {
                 return itemNumber; // if we simply don't have the service, cancel the order
             }
             Set<ServiceProvider> providersForOrder = new HashSet<>();
-            for (ServiceProvider provider : (Set<ServiceProvider>)serviceMap.get(service)) {
-                if (provider.isAvailable)
-                providersForOrder.add()
+            for (ServiceProvider provider : serviceMap.get(service)) {//***Mistake
+                if (provider.isAvailable()) {
+                    providersForOrder.add(provider);
+                }
             }
-            if (quantity > serviceMap.get(service).size()) {
+            if (quantity > providersForOrder.size()) {
                 return itemNumber; // if we don't have enough providers
             }
         }
@@ -170,7 +162,6 @@ public class OrderManagementSystem {
             PW.add(prod);
         }
         return newProds;
-      }
     }
 
     /**
@@ -179,18 +170,18 @@ public class OrderManagementSystem {
     * @param provider the provider to add
     */
     protected void addServiceProvider(ServiceProvider provider) {
-       for (Service service : provider.getServices()) {
-            Set<ServiceProvider> providers;
-            if (serviceMap.keySet().contains(service)) {
-                providers = serviceMap.get(service); //**bug here - Type mismatch: cannot convert from Service to Set<ServiceProvider>
-            } else {
-                providers = new HashSet<>();
-            }
-            providers.add(provider);
-            serviceMap.put(service, providers); //**bug here - The method put(ServiceProvider, Service) in the type Map<ServiceProvider,Service> is not applicable for the arguments (Service, HashSet<ServiceProvider>)
-        }
-    }
-
+      for (Service service : provider.getServices()){
+        Set<ServiceProvider> providers = new HashSet<>();
+           if (serviceMap.keySet().contains(service)){
+            providers = serviceMap.get(service); //*Mistake
+           }
+           else {
+            providers = new HashSet<>();
+           }
+               providers.add(provider);
+               serviceMap.put(service, new HashSet<ServiceProvider>());
+           }
+       }
     /**
      *
      * @return get the set of all the products offered/sold by this business
@@ -203,8 +194,7 @@ public class OrderManagementSystem {
      * @return get the set of all the Services offered/sold by this business
      */
     public Set<Service> getOfferedServices() {
-        return ((ServiceProvider) services).getServices();
-        // return offeredServices.addAll(services);
+        return new HashSet<Service>(serviceMap.keySet());
     }
 
     /**

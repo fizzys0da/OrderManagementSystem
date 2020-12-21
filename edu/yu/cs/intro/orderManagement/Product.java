@@ -33,6 +33,6 @@ public class Product implements Item {
         } 
         @Override
         public int hashCode(){
-            return serviceID;
+            return productID;
         }
 }

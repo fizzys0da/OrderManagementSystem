@@ -1,0 +1,153 @@
+YOUR SCORE: 264 out of 360
+
+TEST NAME: testAddGetCatalog
+TEST DESCRIPTION: OrderManagementSystem: Check that adding products to the catalog, and retrieving them, all work properly
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: testAddGetSevices
+TEST DESCRIPTION: OrderManagementSystem: Check that adding services, and retrieving them, all work properly
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: placeSuccessfulServiceOrder
+TEST DESCRIPTION: OrderManagementSystem: Place an order for services that the system should be able to fulfill. Make sure Providers are marked busy.
+TEST POINT VALUE: 12
+edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: ServiceProvider 1 should've been assigned to fulfilling service 1 but did not throw IllegalStateException when attempted to reassign+++++TEST FAILED+++++
+
+TEST NAME: placeUnsuccessfulServiceOrder
+TEST DESCRIPTION: OrderManagementSystem: Place an order for services that the system should be unable to fulfill. Should throw an exception.
+TEST POINT VALUE: 12
+edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: Should NOT have been able to fulfill the order due to insufficient ServiceProviders, and thus should've thrown an IllegalStateException+++++TEST FAILED+++++
+
+TEST NAME: placeSuccessfulProductOrder
+TEST DESCRIPTION: OrderManagementSystem: Place an order for products that the system should be able to fulfill.
+TEST POINT VALUE: 12
+edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: Successful order should've been marked as completed+++++TEST FAILED+++++
+
+TEST NAME: placeProductOrderNoSuchProduct
+TEST DESCRIPTION: OrderManagementSystem: Place an order for products that the system should NOT be able to fulfill - no such product.
+TEST POINT VALUE: 12
+edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: Should NOT have been able to fulfill the order due to there being no such product, and thus should've thrown an IllegalArgumentException+++++TEST FAILED+++++
+
+TEST NAME: placeProductOrderDoNotRestock
+TEST DESCRIPTION: OrderManagementSystem: Place an order for products that the system should NOT be able to fulfill - ordered more than in stock, its on the do not restock list, and we ordered more than was in stock.
+TEST POINT VALUE: 12
+edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: Should NOT have been able to fulfill the order due to the product being discontinued and not having enough leftover stock to fulfill, and thus should've thrown an IllegalArgumentException+++++TEST FAILED+++++
+
+TEST NAME: successfulValidateServices
+TEST DESCRIPTION: OrderManagementSystem: call validateServices in a situation in which it should return 0.
+TEST POINT VALUE: 12
+edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: validateServices should've returned 0, but returned 1+++++TEST FAILED+++++
+
+TEST NAME: unsuccessfulValidateServicesNotEnoughProviders
+TEST DESCRIPTION: OrderManagementSystem: call validateServices in a situation in which it should find we don't have enough providers for a given service
+TEST POINT VALUE: 12
+edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: validateServices should've returned 6 or 2, but returned 1+++++TEST FAILED+++++
+
+TEST NAME: unsuccessfulValidateServicesProvidersBusy
+TEST DESCRIPTION: OrderManagementSystem: call validateServices in a situation in which providers for a given service are busy
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: successfulValidateProducts
+TEST DESCRIPTION: OrderManagementSystem: call validateProducts in a situation in which it should return 0.
+TEST POINT VALUE: 12
+edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: validateProducts should've returned 0, but returned 1+++++TEST FAILED+++++
+
+TEST NAME: unsuccessfulValidateProductsItemDiscontinued
+TEST DESCRIPTION: OrderManagementSystem: call validateProducts in a situation in which it should fail because item is discontinued and we ordered more than are in stock.
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: simpleAddProductToWarehouse
+TEST DESCRIPTION: Warehouse: add product to warehouse, see that it is there and at the specified stock level.
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: simpleAddProductsToWarehouse
+TEST DESCRIPTION: Warehouse: add multiple products to warehouse, see that they are there and at the specified stock level.
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: addProductAlreadyInWarehouse
+TEST DESCRIPTION: Warehouse: add same product to warehouse multiple times, should throw an IllegalArgumentException.
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: addProductWhichIsOnDoNotRestockList
+TEST DESCRIPTION: Warehouse: add product to warehouse which is on doNotRestock list, should throw an IllegalArgumentException.
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: restockAndGetStockLevel
+TEST DESCRIPTION: Warehouse: make sure calling warehouse.setDefaultStockLevel with level > current level increases the current level
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: restockToLowerAndGetStockLevel
+TEST DESCRIPTION: Warehouse: make sure calling warehouse.setDefaultStockLevel with level < current level doesn't decrease the level without orders being placed
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: setStockLevelRunDownViaOrdersReachNewLevel
+TEST DESCRIPTION: Warehouse: placing orders that lower stock level to zero should cause stock level to rise to whatever the default stock level has been set to for the given item
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: runDownStockViaOrdersRestoreToDefaultLevel
+TEST DESCRIPTION: Warehouse: placing orders that lower stock level to zero should cause stock level to rise to whatever the default stock level is for the given item
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: testIsInCatalog
+TEST DESCRIPTION: Warehouse: adding a product to the catalog should result in a call to warehouse.isInCatalog with its product number returns true
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: testIsRestockable
+TEST DESCRIPTION: Warehouse: calling warehouse.isRestockable on a product in the catalog should return true, unless warehouse.doNotRestock has been called, in which case it should return false
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: testCanFulfill
+TEST DESCRIPTION: Warehouse: calling warehouse.canFullfill should return false if the product is not in the catalog or there are fewer than quantity of the products in the catalog. Otherwise it should return true.
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: testFulfill
+TEST DESCRIPTION: Warehouse: calling warehouse.fullfill should work when there are enough of the product, lower the stock by the right amount, and throw an IllegalArgumentException if there is not enough in stock
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: testGetItems
+TEST DESCRIPTION: Order: check if order.getItems returns the right number, and right set, of products and services
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: testProductEqualsHashcode
+TEST DESCRIPTION: Product: equals and hashCode should both be determined exclusively by productID
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: testServiceEqualsHashcode
+TEST DESCRIPTION: Service: equals and hashCode should both be determined exclusively by serviceID
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: testAddRemoveGetServices
+TEST DESCRIPTION: ServiceProvider: adding, removing, and getting services
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: testAssignEndCustomerEngagement
+TEST DESCRIPTION: ServiceProvider: assign / end customer engagement
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+TEST NAME: testEqualsHashcodeServiceProvider
+TEST DESCRIPTION: ServiceProvider: equals and hashCode should both be determined exclusively by ID
+TEST POINT VALUE: 12
++++++TEST PASSED+++++
+
+

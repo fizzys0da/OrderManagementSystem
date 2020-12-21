@@ -1,2 +1,2 @@
 language = "java10"
-run = "echo hello world"
+run = "clear\ncd edu/yu/cs/intro/orderManagement/\njavac *.java\ncd ../../../../..\njava -ea edu.yu.cs.intro.orderManagement.Assignment8Tests"

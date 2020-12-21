@@ -54,7 +54,7 @@ public class Warehouse {
       if (!isInCatalog(productNumber) || noRestocks.contains(getProduct(productNumber))){
           throw new IllegalArgumentException();
       }
-      Entry<Product, ProductTuple> entry = getProductEntry(productNumber); //**Can't Convert From Product to Map.Entry
+      Entry<Product, ProductTuple> entry = getProductEntry(productNumber);
       int stock = getStockLevel(productNumber);
       int defaultStock = entry.getValue().getDefaultLevel();
       if (stock >= minimum){
