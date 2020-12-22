@@ -140,10 +140,10 @@ public class Warehouse {
       * @return false if the product is not in the catalog or there are fewer than quantity of the products in the catalog. Otherwise true.
       */
     protected boolean canFulfill(int productNumber, int quantity) {
-       if (!isInCatalog(productNumber) || quantity > getStockLevel(productNumber)){
-        return false;
-      }
-      return true;
+        if (!isInCatalog(productNumber) || quantity > getStockLevel(productNumber)){
+            return false;
+        }
+        return true;
     }
 
     /**

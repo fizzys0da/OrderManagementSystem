@@ -37,11 +37,11 @@ public class Order {
      * @param quantity
      */
     public void addToOrder(Item item, int quantity) {
-      if (items.containsKey(item)) {
-        items.put(item, items.get(item) + quantity);
-      } else {
-        items.put(item, quantity);
-      }
+        if (items.containsKey(item)) {
+            items.put(item, items.get(item) + quantity);
+        } else {
+            items.put(item, quantity);
+        }
     }
 
     /**

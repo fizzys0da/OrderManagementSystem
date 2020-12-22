@@ -16,6 +16,7 @@ public class ServiceProvider {
     private boolean busy = false;
     private int jobTimeLeft = 0;
     private Set<Service> services;
+    private boolean isStaged = false;
 
     /**
       *
@@ -41,12 +42,12 @@ public class ServiceProvider {
       * Assign this provider to a customer. Record the fact that he is busy.
       * @throws IllegalStateException if the provider is currently assigned to a job */
     protected void assignToCustomer() {
-        if (busy == false) {
-            busy = true;
-            jobTimeLeft = 3;
+        if (busy) {
+            throw new IllegalStateException("Already assigned!");
         } 
         else {
-            throw new IllegalStateException("Already assigned!");
+            busy = true;
+            jobTimeLeft = 3;
         }
     }
         
@@ -110,7 +111,11 @@ public class ServiceProvider {
     }
 
     protected boolean isAvailable() {
-        return !busy && jobTimeLeft == 0;
+        return !busy && !isStaged && jobTimeLeft == 0;
+    }
+
+    protected void setStaged(boolean isStaged) {
+        this.isStaged = isStaged;
     }
 
     @Override

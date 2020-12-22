@@ -1,4 +1,4 @@
-YOUR SCORE: 264 out of 360
+YOUR SCORE: 360 out of 360
 
 TEST NAME: testAddGetCatalog
 TEST DESCRIPTION: OrderManagementSystem: Check that adding products to the catalog, and retrieving them, all work properly
@@ -13,37 +13,37 @@ TEST POINT VALUE: 12
 TEST NAME: placeSuccessfulServiceOrder
 TEST DESCRIPTION: OrderManagementSystem: Place an order for services that the system should be able to fulfill. Make sure Providers are marked busy.
 TEST POINT VALUE: 12
-edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: ServiceProvider 1 should've been assigned to fulfilling service 1 but did not throw IllegalStateException when attempted to reassign+++++TEST FAILED+++++
++++++TEST PASSED+++++
 
 TEST NAME: placeUnsuccessfulServiceOrder
 TEST DESCRIPTION: OrderManagementSystem: Place an order for services that the system should be unable to fulfill. Should throw an exception.
 TEST POINT VALUE: 12
-edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: Should NOT have been able to fulfill the order due to insufficient ServiceProviders, and thus should've thrown an IllegalStateException+++++TEST FAILED+++++
++++++TEST PASSED+++++
 
 TEST NAME: placeSuccessfulProductOrder
 TEST DESCRIPTION: OrderManagementSystem: Place an order for products that the system should be able to fulfill.
 TEST POINT VALUE: 12
-edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: Successful order should've been marked as completed+++++TEST FAILED+++++
++++++TEST PASSED+++++
 
 TEST NAME: placeProductOrderNoSuchProduct
 TEST DESCRIPTION: OrderManagementSystem: Place an order for products that the system should NOT be able to fulfill - no such product.
 TEST POINT VALUE: 12
-edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: Should NOT have been able to fulfill the order due to there being no such product, and thus should've thrown an IllegalArgumentException+++++TEST FAILED+++++
++++++TEST PASSED+++++
 
 TEST NAME: placeProductOrderDoNotRestock
 TEST DESCRIPTION: OrderManagementSystem: Place an order for products that the system should NOT be able to fulfill - ordered more than in stock, its on the do not restock list, and we ordered more than was in stock.
 TEST POINT VALUE: 12
-edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: Should NOT have been able to fulfill the order due to the product being discontinued and not having enough leftover stock to fulfill, and thus should've thrown an IllegalArgumentException+++++TEST FAILED+++++
++++++TEST PASSED+++++
 
 TEST NAME: successfulValidateServices
 TEST DESCRIPTION: OrderManagementSystem: call validateServices in a situation in which it should return 0.
 TEST POINT VALUE: 12
-edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: validateServices should've returned 0, but returned 1+++++TEST FAILED+++++
++++++TEST PASSED+++++
 
 TEST NAME: unsuccessfulValidateServicesNotEnoughProviders
 TEST DESCRIPTION: OrderManagementSystem: call validateServices in a situation in which it should find we don't have enough providers for a given service
 TEST POINT VALUE: 12
-edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: validateServices should've returned 6 or 2, but returned 1+++++TEST FAILED+++++
++++++TEST PASSED+++++
 
 TEST NAME: unsuccessfulValidateServicesProvidersBusy
 TEST DESCRIPTION: OrderManagementSystem: call validateServices in a situation in which providers for a given service are busy
@@ -53,7 +53,7 @@ TEST POINT VALUE: 12
 TEST NAME: successfulValidateProducts
 TEST DESCRIPTION: OrderManagementSystem: call validateProducts in a situation in which it should return 0.
 TEST POINT VALUE: 12
-edu.yu.cs.intro.orderManagement.Assignment8Tests$IncorrectBehaviorException: validateProducts should've returned 0, but returned 1+++++TEST FAILED+++++
++++++TEST PASSED+++++
 
 TEST NAME: unsuccessfulValidateProductsItemDiscontinued
 TEST DESCRIPTION: OrderManagementSystem: call validateProducts in a situation in which it should fail because item is discontinued and we ordered more than are in stock.
